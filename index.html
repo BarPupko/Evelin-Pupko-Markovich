@@ -531,19 +531,77 @@
             .cta-btns { flex-direction: column; align-items: center; }
             .ig-grid { grid-template-columns: repeat(2,1fr); }
         }
+
+        /* ─── ACCESSIBILITY ─── */
+        .skip-link {
+            position: absolute; top: -120px; right: 0; z-index: 9999;
+            background: var(--teal); color: #fff;
+            padding: 14px 28px; font-weight: 700; font-size: 1rem;
+            border-radius: 0 0 var(--r-sm) var(--r-sm);
+            transition: top .2s;
+        }
+        .skip-link:focus { top: 0; }
+
+        :focus-visible {
+            outline: 3px solid var(--yellow);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+        :focus:not(:focus-visible) { outline: none; }
+
+        /* ─── COOKIE BANNER ─── */
+        #cookie-bar {
+            position: fixed; bottom: 0; inset-inline: 0; z-index: 2000;
+            background: var(--dark);
+            border-top: 3px solid var(--teal);
+            padding: 18px 24px;
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 16px; justify-content: space-between;
+            transition: transform .4s ease;
+        }
+        #cookie-bar.hidden { transform: translateY(110%); }
+        .cookie-text {
+            font-size: .9rem; color: rgba(255,255,255,.85);
+            flex: 1; min-width: 220px; line-height: 1.6;
+        }
+        .cookie-text a { color: var(--yellow); text-decoration: underline; }
+        .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+        .cookie-accept {
+            background: var(--teal); color: #fff;
+            padding: 10px 22px; border-radius: 50px;
+            font-weight: 700; font-size: .9rem;
+            border: none; cursor: pointer; transition: var(--ease);
+            font-family: 'Heebo', sans-serif;
+        }
+        .cookie-accept:hover { background: var(--teal-dark); }
+        .cookie-decline {
+            background: transparent; color: rgba(255,255,255,.65);
+            padding: 10px 16px; border-radius: 50px;
+            font-size: .85rem; border: 1px solid rgba(255,255,255,.25);
+            cursor: pointer; transition: var(--ease);
+            font-family: 'Heebo', sans-serif;
+        }
+        .cookie-decline:hover { color: #fff; border-color: rgba(255,255,255,.6); }
+
+        @media (max-width: 600px) {
+            .a11y-btn { bottom: 88px; left: 14px; width: 46px; height: 46px; font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
 
+<!-- Skip to main content (נגישות) -->
+<a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
+
 <!-- ══════════════════════════════════════════
      HEADER
 ══════════════════════════════════════════ -->
-<header id="header">
+<header id="header" role="banner">
     <div class="container">
-        <nav class="nav-inner">
-            <a href="#" class="logo">אוולין <span>מרקוביץ׳</span></a>
+        <nav class="nav-inner" aria-label="ניווט ראשי">
+            <a href="#" class="logo" aria-label="עמוד הבית – אוולין מרקוביץ'">אוולין <span>מרקוביץ׳</span></a>
 
-            <ul class="nav-links">
+            <ul class="nav-links" role="list">
                 <li><a href="#about">אודות</a></li>
                 <li><a href="#services">שירותים</a></li>
                 <li><a href="#testimonials">לקוחות</a></li>
@@ -552,19 +610,22 @@
             </ul>
 
             <div class="nav-right">
-                <a href="tel:0545984581" class="nav-phone">📞 054-598-4581</a>
+                <a href="tel:0545984581" class="nav-phone" aria-label="חייגו 054-598-4581">📞 054-598-4581</a>
                 <a href="#cta" class="btn btn-teal">תיאום פגישה</a>
-                <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-                    <span></span><span></span><span></span>
-                </div>
+                <button class="hamburger" id="hamburger" onclick="toggleMenu()"
+                    aria-controls="mobileMenu" aria-expanded="false" aria-label="פתח תפריט">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </button>
             </div>
         </nav>
     </div>
 </header>
 
 <!-- Mobile Menu -->
-<div class="mobile-menu" id="mobileMenu">
-    <ul>
+<nav class="mobile-menu" id="mobileMenu" aria-label="תפריט נייד" aria-hidden="true">
+    <ul role="list">
         <li><a href="#about" onclick="toggleMenu()">אודות</a></li>
         <li><a href="#services" onclick="toggleMenu()">שירותים</a></li>
         <li><a href="#testimonials" onclick="toggleMenu()">לקוחות</a></li>
@@ -572,18 +633,20 @@
         <li><a href="#cta" onclick="toggleMenu()">צרו קשר</a></li>
     </ul>
     <div class="mobile-menu-btns">
-        <a href="tel:0545984581" class="btn btn-teal">📞 חייגו</a>
-        <a href="https://wa.me/972545984581" class="btn btn-yellow" target="_blank">💬 WhatsApp</a>
+        <a href="tel:0545984581" class="btn btn-teal" aria-label="חייגו 054-598-4581">📞 חייגו</a>
+        <a href="https://wa.me/972545984581" class="btn btn-yellow" target="_blank" rel="noopener noreferrer" aria-label="פתיחת WhatsApp">💬 WhatsApp</a>
     </div>
-</div>
+</nav>
 
+
+<main id="main-content">
 
 <!-- ══════════════════════════════════════════
-     HERO
+     HERO  (רקע: images/hero.jpg – הפורטרט המקצועי)
 ══════════════════════════════════════════ -->
-<section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-gradient"></div>
+<section id="hero" aria-label="כותרת ראשית – אוולין מרקוביץ'">
+    <div class="hero-bg" role="img" aria-label="תמונת אוולין מרקוביץ' – מנטורית עסקית ואישית"></div>
+    <div class="hero-gradient" aria-hidden="true"></div>
     <div class="container">
         <div class="hero-content">
             <div class="hero-badge">✦ מנטורית עסקית ואישית בכירה</div>
@@ -949,10 +1012,12 @@
 </section>
 
 
+</main><!-- /main -->
+
 <!-- ══════════════════════════════════════════
      FOOTER
 ══════════════════════════════════════════ -->
-<footer>
+<footer role="contentinfo">
     <div class="container">
         <div class="footer-grid">
             <div>
@@ -962,9 +1027,9 @@
                     מלווה ארגונים, מנהלים ואנשים פרטיים לפריצת דרך ותוצאות מדידות.
                 </p>
                 <div class="footer-socials">
-                    <a href="https://www.instagram.com/evelin_.1123/" target="_blank" class="social ig">📸</a>
-                    <a href="https://www.youtube.com/watch?v=9wSGjxaUj7Q" target="_blank" class="social yt">▶</a>
-                    <a href="https://wa.me/972545984581" target="_blank" class="social wa">💬</a>
+                    <a href="https://www.instagram.com/evelin_.1123/" target="_blank" rel="noopener noreferrer" class="social ig" aria-label="עמוד אינסטגרם של אוולין מרקוביץ'">📸</a>
+                    <a href="https://www.youtube.com/watch?v=9wSGjxaUj7Q" target="_blank" rel="noopener noreferrer" class="social yt" aria-label="ערוץ יוטיוב של אוולין מרקוביץ'">▶</a>
+                    <a href="https://wa.me/972545984581" target="_blank" rel="noopener noreferrer" class="social wa" aria-label="פתיחת שיחת WhatsApp">💬</a>
                 </div>
             </div>
 
@@ -993,8 +1058,9 @@
         <div class="footer-bottom">
             <span>© 2026 אוולין מרקוביץ' | כל הזכויות שמורות</span>
             <div class="footer-policy">
-                <a href="#">מדיניות פרטיות</a>
-                <a href="#">תנאי שימוש</a>
+                <a href="privacy.html">מדיניות פרטיות</a>
+                <a href="terms.html">תנאי שימוש</a>
+                <a href="accessibility.html">הצהרת נגישות</a>
             </div>
         </div>
     </div>
@@ -1004,9 +1070,25 @@
 <!-- ══════════════════════════════════════════
      FLOATING BUTTONS
 ══════════════════════════════════════════ -->
-<div class="floats">
-    <a href="https://wa.me/972545984581" target="_blank" class="fab wa" title="WhatsApp">💬</a>
-    <a href="tel:0545984581" class="fab phone" title="חייגו">📞</a>
+<div class="floats" aria-label="כפתורי יצירת קשר מהירים">
+    <a href="https://wa.me/972545984581" target="_blank" rel="noopener noreferrer"
+       class="fab wa" aria-label="פתיחת שיחת WhatsApp">💬</a>
+    <a href="tel:0545984581" class="fab phone" aria-label="חייגו 054-598-4581">📞</a>
+</div>
+
+<!-- ══════════════════════════════════════════
+     COOKIE BANNER
+══════════════════════════════════════════ -->
+<div id="cookie-bar" role="region" aria-label="הסכמה לשימוש בעוגיות">
+    <p class="cookie-text">
+        אתר זה משתמש בקובצי עוגייה (Cookies) לצורך שיפור חוויית הגלישה ואיסוף נתונים סטטיסטיים אנונימיים.
+        המשך גלישה מהווה הסכמה לשימוש בעוגיות.
+        <a href="privacy.html">מדיניות הפרטיות שלנו ←</a>
+    </p>
+    <div class="cookie-actions">
+        <button class="cookie-accept" onclick="acceptCookies()" aria-label="אישור שימוש בעוגיות">אני מסכים/ה</button>
+        <button class="cookie-decline" onclick="declineCookies()" aria-label="דחיית שימוש בעוגיות">רק חיוניות</button>
+    </div>
 </div>
 
 
@@ -1022,15 +1104,37 @@ window.addEventListener('scroll', () => {
 
 /* Mobile menu */
 function toggleMenu() {
-    document.getElementById('mobileMenu').classList.toggle('open');
+    const menu = document.getElementById('mobileMenu');
+    const ham  = document.getElementById('hamburger');
+    const isOpen = menu.classList.toggle('open');
+    ham.setAttribute('aria-expanded', isOpen);
+    menu.setAttribute('aria-hidden', !isOpen);
 }
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('mobileMenu');
     const ham  = document.getElementById('hamburger');
     if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) {
         menu.classList.remove('open');
+        ham.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
     }
 });
+
+/* Cookie banner */
+(function() {
+    const bar = document.getElementById('cookie-bar');
+    if (localStorage.getItem('cookie-consent')) {
+        bar.classList.add('hidden');
+    }
+})();
+function acceptCookies() {
+    localStorage.setItem('cookie-consent', 'accepted');
+    document.getElementById('cookie-bar').classList.add('hidden');
+}
+function declineCookies() {
+    localStorage.setItem('cookie-consent', 'essential');
+    document.getElementById('cookie-bar').classList.add('hidden');
+}
 
 /* Scroll reveal */
 const reveals = document.querySelectorAll('.reveal');
@@ -1073,6 +1177,19 @@ window.addEventListener('scroll', () => {
     });
 }, { passive: true });
 </script>
+
+<!-- ══════════════════════════════════════════
+     NAGISHLI ACCESSIBILITY WIDGET
+     https://nagish.li | GNU LGPL v3
+══════════════════════════════════════════ -->
+<script>
+nagishli_config = {
+    language: "he",
+    color: "turquoise",
+    accessibility_statement_link: "accessibility.html"
+};
+</script>
+<script src="nagishli_v3_beta/nagishli_beta.js?v=3.0b" charset="utf-8" defer></script>
 
 </body>
 </html>
