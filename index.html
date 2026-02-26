@@ -586,6 +586,204 @@
         @media (max-width: 600px) {
             .a11y-btn { bottom: 88px; left: 14px; width: 46px; height: 46px; font-size: 1.1rem; }
         }
+
+        /* ─── DAILY ENVELOPE LIGHTBOX ─── */
+        .env-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(28,43,58,.62);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            animation: envFadeIn .45s ease forwards;
+        }
+        @keyframes envFadeIn { to { opacity: 1; } }
+
+        .env-scene {
+            position: relative;
+            width: 330px;
+            animation: envPopIn .55s .25s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes envPopIn {
+            from { transform: scale(.65) translateY(40px); opacity: 0; }
+            to   { transform: none; opacity: 1; }
+        }
+
+        .env-close-btn {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            animation: envFadeIn .3s 2.35s ease forwards;
+            transition: background .2s;
+            z-index: 30;
+        }
+        .env-close-btn:hover { background: #c0392b; }
+
+        .env-shell {
+            position: relative;
+            width: 330px;
+            height: 200px;
+            perspective: 600px;
+        }
+
+        .env-body {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(150deg, #fffce8 0%, #fef3c7 100%);
+            border-radius: 6px 6px 16px 16px;
+            box-shadow:
+                0 22px 60px rgba(28,43,58,.30),
+                0 4px 18px rgba(232,184,75,.22);
+            overflow: hidden;
+            z-index: 1;
+        }
+        /* bottom V-fold decoration */
+        .env-body::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 0;
+            border-left: 165px solid rgba(232,184,75,.20);
+            border-right: 165px solid rgba(232,184,75,.20);
+            border-bottom: 100px solid rgba(61,189,181,.10);
+        }
+        /* side diagonal folds */
+        .env-body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom right, rgba(232,184,75,.16) 0%, transparent 46%),
+                linear-gradient(to bottom left,  rgba(232,184,75,.16) 0%, transparent 46%);
+            pointer-events: none;
+        }
+
+        /* Envelope flap – triangle pointing down */
+        .env-flap {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 130px;
+            transform-origin: 50% 0;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            animation: envFlapOpen .7s .9s ease-in-out forwards;
+            z-index: 10;
+        }
+        .env-flap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(170deg, #fef6d0 0%, #fde68a 100%);
+            clip-path: polygon(0 0, 50% 68%, 100% 0);
+            border-radius: 6px 6px 0 0;
+        }
+        @keyframes envFlapOpen {
+            0%   { transform: rotateX(0deg); }
+            100% { transform: rotateX(-180deg); }
+        }
+
+        /* The greeting card that rises from inside */
+        .env-card {
+            position: absolute;
+            left: 14px; right: 14px;
+            bottom: 8px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 18px 16px;
+            text-align: center;
+            border-top: 4px solid var(--teal);
+            box-shadow:
+                0 -2px 20px rgba(28,43,58,.12),
+                0 8px 32px rgba(28,43,58,.10);
+            transform: translateY(60%);
+            opacity: 0;
+            animation: envCardRise .65s 1.6s cubic-bezier(.34,1.56,.64,1) forwards;
+            z-index: 5;
+        }
+        @keyframes envCardRise {
+            from { transform: translateY(60%);   opacity: 0; }
+            to   { transform: translateY(-220px); opacity: 1; }
+        }
+
+        .env-card-ribbon {
+            display: inline-block;
+            background: var(--teal-light);
+            color: var(--teal-dark);
+            font-size: .63rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 12px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+        }
+        .env-card-icon {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            animation: envIconPop .4s 2.2s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes envIconPop {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        .env-card-label {
+            font-size: .67rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 10px;
+        }
+        .env-card-quote {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: .97rem;
+            line-height: 1.65;
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-weight: 400;
+            font-style: normal;
+        }
+        .env-card-attr {
+            font-size: .76rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-style: italic;
+        }
+        .env-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 22px;
+            background: var(--teal);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Heebo', sans-serif;
+            font-size: .87rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .2s, transform .15s;
+            opacity: 0;
+            animation: envFadeIn .3s 2.35s ease forwards;
+        }
+        .env-cta-btn:hover { background: var(--teal-dark); transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
@@ -1075,6 +1273,28 @@
 
 
 <!-- ══════════════════════════════════════════
+     DAILY ENVELOPE LIGHTBOX
+══════════════════════════════════════════ -->
+<div class="env-overlay" id="envOverlay" role="dialog" aria-modal="true" aria-label="מסר יומי">
+    <div class="env-scene">
+        <button class="env-close-btn" id="envCloseBtn" aria-label="סגור">×</button>
+        <div class="env-shell">
+            <div class="env-flap" aria-hidden="true"></div>
+            <div class="env-body" aria-hidden="true"></div>
+            <div class="env-card">
+                <span class="env-card-ribbon">מסר יומי</span>
+                <span class="env-card-icon" id="envIcon">🌟</span>
+                <p class="env-card-label">מחשבה לדרך</p>
+                <blockquote class="env-card-quote" id="envQuote"></blockquote>
+                <p class="env-card-attr" id="envAttr"></p>
+                <button class="env-cta-btn" id="envCtaBtn">תודה, קיבלתי! ✓</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
      FLOATING BUTTONS
 ══════════════════════════════════════════ -->
 <div class="floats" aria-label="כפתורי יצירת קשר מהירים">
@@ -1172,6 +1392,107 @@ const so = new IntersectionObserver(entries => {
     });
 }, { threshold: 0.5 });
 if (statsSection) so.observe(statsSection);
+
+/* ─── DAILY ENVELOPE LIGHTBOX ─── */
+(function () {
+    var NOTES = [
+        { icon: '🌱', quote: 'כל מסע גדול מתחיל בצעד אחד קטן. היום הוא הצעד שלך.', attr: '— לאו-צה' },
+        { icon: '✨', quote: 'אי אפשר לשנות את מה שאינך מודה בו. אבל אתה כאן – וזו כבר הכרה.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '🔥', quote: 'הזמן שאתה מקצה לחלומות שלך קובע אם יהפכו למציאות.', attr: '— ראלף ואלדו אמרסון' },
+        { icon: '💡', quote: 'אנשים מצליחים לא מחכים לרגע המושלם. הם עושים את הרגע למושלם.', attr: '— טוני רובינס' },
+        { icon: '🌊', quote: 'שינוי אמיתי אינו קורה כשהחיים נוחים – הוא קורה כשאתה מחליט שמספיק.', attr: '— טוני רובינס' },
+        { icon: '🦋', quote: 'מי שאתה עוד לא – הוא מי שאתה עומד להיות. תן לו מקום לצמוח.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '⚡', quote: 'פחד אינו האויב. פחד הוא הסימן שאתה בדיוק על הדרך הנכונה.', attr: '— סטיבן פרספילד' },
+        { icon: '🌟', quote: 'כל ניסיון שנכשל לימד אותך משהו שהצלחה לא יכלה ללמד אי פעם.', attr: '— ג\'ון מקסוול' },
+        { icon: '🏔️', quote: 'העוצמה האמיתית שלך מסתתרת בדיוק מאחורי אי-הנוחות שאתה נמנע ממנה.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '🧭', quote: 'אינך צריך לראות את כל המדרגות. רק את הצעד הבא.', attr: '— מרטין לות\'ר קינג' },
+        { icon: '💫', quote: 'חיים מלאי משמעות אינם מחכים לך – הם נבנים יום אחר יום, בחירה אחר בחירה.', attr: '— ויקטור פרנקל' },
+        { icon: '🌈', quote: 'הגרסה הטובה ביותר שלך כבר קיימת בתוכך – היא רק מחכה שתאמין בה.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '🎯', quote: 'השינוי שאתה מחפש בחוץ תמיד מתחיל בפנים.', attr: '— מהטמה גאנדי' },
+        { icon: '🌙', quote: 'הרגלים יומיומיים קטנים הם המבנה שממנו נבנים חיים גדולים.', attr: '— ג\'יימס קליר' },
+        { icon: '💎', quote: 'עצמאות אמיתית היא כשאתה בוחר מי להיות – לא רק מה לעשות.', attr: '— פרידריך ניטשה' },
+        { icon: '🔑', quote: 'הבחירות הקשות ביותר הן בדיוק אלו שמגדירות מי אנחנו.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '🌺', quote: 'מה שאתה שם לב אליו – גדל. הפנה את תשומת לבך לאן שאתה רוצה לצמוח.', attr: '— ברנה בראון' },
+        { icon: '⭐', quote: 'עסק מצליח הוא בראש ובראשונה אדם מצליח – מכיר את עצמו ומאמין בדרכו.', attr: '— אוולין מרקוביץ\'' },
+        { icon: '🦅', quote: 'ציפורים לא נולדות יודעות לעוף. הן קופצות ולומדות בדרך. כך גם אנחנו.', attr: '— ריצ\'ארד באך' },
+        { icon: '🌻', quote: 'רגעי שבירה הם בדיוק ממש לפני רגעי הפריצה. אל תפסיק כשאתה קרוב.', attr: '— וינסטון צ\'רצ\'יל' },
+        { icon: '🎆', quote: 'אל תנסה להיות מוצלח. נסה להיות בעל ערך – ההצלחה תגיע מעצמה.', attr: '— אלברט איינשטיין' },
+        { icon: '🌍', quote: 'המנטור הטוב ביותר אינו נותן לך תשובות – הוא עוזר לך למצוא אותן בתוכך.', attr: '— אוולין מרקוביץ\'' }
+    ];
+
+    var STORAGE_KEY = 'evelin_daily_note';
+
+    function getTodayKey() {
+        var d = new Date();
+        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+
+    function shouldShow() {
+        try {
+            var stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return true;
+            var data = JSON.parse(stored);
+            return data.date !== getTodayKey();
+        } catch (e) { return true; }
+    }
+
+    function getNextIndex() {
+        try {
+            var stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return 0;
+            var data = JSON.parse(stored);
+            return (data.index + 1) % NOTES.length;
+        } catch (e) { return 0; }
+    }
+
+    function saveShown(index) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: getTodayKey(), index: index }));
+        } catch (e) {}
+    }
+
+    function closeEnvelope() {
+        var overlay = document.getElementById('envOverlay');
+        if (!overlay) return;
+        overlay.style.transition = 'opacity .3s ease';
+        overlay.style.opacity = '0';
+        setTimeout(function () {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 350);
+    }
+
+    function init() {
+        var overlay = document.getElementById('envOverlay');
+        if (!overlay) return;
+
+        if (!shouldShow()) {
+            overlay.parentNode.removeChild(overlay);
+            return;
+        }
+
+        var idx  = getNextIndex();
+        var note = NOTES[idx];
+        document.getElementById('envIcon').textContent  = note.icon;
+        document.getElementById('envQuote').textContent = note.quote;
+        document.getElementById('envAttr').textContent  = note.attr;
+        saveShown(idx);
+
+        document.getElementById('envCloseBtn').addEventListener('click', closeEnvelope);
+        document.getElementById('envCtaBtn').addEventListener('click', closeEnvelope);
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeEnvelope();
+        });
+        document.addEventListener('keydown', function handler(e) {
+            if (e.key === 'Escape') { closeEnvelope(); document.removeEventListener('keydown', handler); }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
 
 /* Active nav highlight */
 const sects = document.querySelectorAll('section[id]');
